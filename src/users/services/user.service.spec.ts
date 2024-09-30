@@ -39,10 +39,11 @@ describe('UserService', () => {
         cargo: 'Desenvolvedor',
       };
 
-      mockPrismaService.user.create.mockReturnValue(Promise.resolve({id:1, ...CreateUserDto}))
+      mockPrismaService.user.create.mockReturnValue(Promise.resolve({id:1, ...createUserDto}))
+
       
       const resultado = await service.createUser(createUserDto)
-
+      
       expect(resultado).toEqual({id:1, ...createUserDto})
       expect(prismaService.user.create).toHaveBeenCalledWith({
         data: createUserDto
