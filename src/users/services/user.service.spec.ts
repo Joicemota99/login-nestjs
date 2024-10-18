@@ -10,7 +10,8 @@ describe('UserService', () => {
 
   const mockPrismaService = {
     user: {
-      create: jest.fn()
+      create: jest.fn(),
+      findUnique: jest.fn(),
     }
   }
 
@@ -39,7 +40,7 @@ describe('UserService', () => {
         cargo: 'Desenvolvedor',
       };
 
-      mockPrismaService.user.create.mockReturnValue(Promise.resolve({id:1, ...CreateUserDto}))
+      mockPrismaService.user.create.mockReturnValue(Promise.resolve({id:1, ...createUserDto}))
       
       const resultado = await service.createUser(createUserDto)
 
@@ -47,6 +48,29 @@ describe('UserService', () => {
       expect(prismaService.user.create).toHaveBeenCalledWith({
         data: createUserDto
       })
+    })
+  })
+
+  describe('Buscando usuário por e-mail',()=>{
+    it('Achando usuário pelo email', async () =>{
+      const email = 'usuario@example.com';
+        const expectedUser = {
+          id: 1,
+          email: 'usuario@example.com',
+          nome: 'Usuário Teste',
+          telefone: 123456789,
+          senha: 'SenhaForte123!',
+          cargo: 'Desenvolvedor',
+        };
+
+        mockPrismaService.user.findUnique.mockReturnValue(Promise.resolve(expectedUser))
+
+        const resultado = await service.findByEmail(email);
+
+        expect(resultado).toEqual(expectedUser);
+        expect(prismaService.user.findUnique).toHaveBeenCalledWith({
+          where:{email}
+        })
     })
   })
 })

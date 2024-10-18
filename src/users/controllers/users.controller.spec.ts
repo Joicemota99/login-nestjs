@@ -9,6 +9,7 @@ describe('UsersController', () => {
 
   const mockUserService = {
     createUser: jest.fn(),
+    
   }
 
   beforeEach(async () =>{
@@ -42,4 +43,6 @@ describe('UsersController', () => {
       expect(userService.createUser).toHaveBeenCalledWith(createUserDto)
     })
   })
+
+
 });
